@@ -1,0 +1,190 @@
+<div class="form-group" style="text-align:center">
+<h1>FORMULARIO</h1>
+</div>
+<hr>
+<div class="form-group">
+<h3>¿A qué sector pertenece su empresa?</h3>
+</div>
+
+<div class="form-group">
+
+
+
+  <div class="radio">
+
+  {!! Form::hidden('idconsultoria', $consultoria) !!}
+  
+  {{ Form::radio('respuesta1', 'Servicios' , false) }}
+  {!! Form::label('label', 'Servicios') !!}
+  <br/>
+  {{ Form::radio('respuesta1', 'Comercial' , false) }}
+  {!! Form::label('label', 'Comercial') !!}
+  <br/>
+  {{ Form::radio('respuesta1', 'Industrial' , false) }}
+  {!! Form::label('label', 'Industrial') !!}
+  <br/>
+  {{ Form::radio('respuesta1', 'Hoteleria y Turismo' , false) }}
+  {!! Form::label('label', 'Hoteleria y Turismo') !!}
+  <br/>
+  {{ Form::radio('respuesta1', 'Banca' , false) }}
+  {!! Form::label('label', 'Banca') !!}
+  <br/>
+  {{ Form::radio('respuesta1', 'Seguros' , false) }}
+  {!! Form::label('label', 'Seguros') !!}
+  <br/>
+<!--  {{ Form::radio('respuesta1', 'No estoy seguro => nola' , false) }}
+  {!! Form::label('label', 'No estoy seguro') !!}-->
+ </div>
+</div>
+<hr>
+<div class="form-group">
+<h3>Tiene operaciones con clientes o provedores del exterior?</h3>
+</div>
+<div class="form-group">
+
+{{ Form::radio('respuesta2', 'si' , false) }}
+{!! Form::label('label', 'si') !!} <br/>
+{{ Form::radio('respuesta2', 'no' , false) }}
+{!! Form::label('label', 'no') !!}<br/>
+<!--{{ Form::radio('respuesta2', 'No estoy seguro' , false) }}
+{!! Form::label('label', 'No estoy seguro') !!} -->
+</div>
+
+<hr>
+<div class="form-group">
+<h3>Tiene operaciones con partes relacionadas?</h3>
+</div>
+<div class="form-group">
+
+{{ Form::radio('respuesta3', 'si' , false) }}
+{!! Form::label('label', 'si') !!} <br/>
+{{ Form::radio('respuesta3', 'no' , false) }}
+{!! Form::label('label', 'no') !!}<br/>
+<!--{{ Form::radio('respuesta3', 'No estoy seguro' , false) }}
+{!! Form::label('label', 'No estoy seguro') !!} -->
+</div>
+
+<hr>
+<div class="form-group">
+<h3>Indique la actividad economica de su empresa</h3>
+</div>
+<div class="form-group">
+{{Form::select('respuesta4', array('Actividad 1' => 'Actividad 1', 'Actividad 2' => 'Actividad 2'))}}
+</div>
+
+<div class="form-group">
+<h3>Está su empresa inscrita en el mercado de valores?</h3>
+</div>
+<div class="form-group">
+
+{{ Form::radio('respuesta5', 'si' , false) }}
+{!! Form::label('label', 'si') !!} <br/>
+{{ Form::radio('respuesta5', 'no' , false) }}
+{!! Form::label('label', 'no') !!}<br/>
+<!--{{ Form::radio('respuesta5', 'No estoy seguro' , false) }}
+{!! Form::label('label', 'No estoy seguro') !!} -->
+</div>
+<div class="form-group">
+<h3>Está su empresa obligada a contratar auditoría externa?</h3>
+</div>
+<div class="form-group">
+
+{{ Form::radio('respuesta6', 'si' , false, ['onClick' => 'pdfsi()','id'=>'respuesta6si']) }}
+{!! Form::label('label', 'si') !!} <br/>
+{{ Form::radio('respuesta6', 'no' , false, ['onClick' => 'pdfno()','id'=>'respuesta6no']) }}
+{!! Form::label('label', 'no') !!}<br/>
+<div class="form-control col-7" id="divpdf">
+{!! Form::label('label', 'Subir pdf') !!}<br/>
+{{ Form::file('formulariopdf',['id' => 'formulariopdf','required' => 'required']) }}
+</div>
+
+<!--{{ Form::radio('respuesta6', 'No estoy seguro' , false) }}
+{!! Form::label('label', 'No estoy seguro') !!} 
+ array('disabled') ,-->
+</div>
+
+
+
+
+
+
+<script>
+  function pdfsi(){
+  /* var archivopdf = document.getElementyById('formulariopdf');
+  archivopdf.enabled = true;*/
+  document.getElementById("formulariopdf").disabled = false;
+  document.getElementById('divpdf').style.display='block';
+  document.getElementById('formulariopdf').style.display='block';
+  }
+
+  function pdfno(){
+    document.getElementById("formulariopdf").disabled = true;
+    document.getElementById('divpdf').style.display='none';
+    document.getElementById('formulariopdf').style.display='none';
+  }
+
+  if (document.getElementById("respuesta6si").checked)
+  {
+    document.getElementById("formulariopdf").disabled = false;
+    document.getElementById('divpdf').style.display='block';
+    document.getElementById('formulariopdf').style.display='block';
+  }
+  else
+  { 
+    document.getElementById("formulariopdf").disabled = true;
+    document.getElementById('divpdf').style.display='none';
+    document.getElementById('formulariopdf').style.display='none';
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+<div class="form-group">
+<!--<input type=button onclick="pregunta()" value="Enviar">  -->
+
+
+{{Form::submit('Guardar', ['class'=>'btn btn-sm btn-primary','disabled' => 'disabled','id'=>'Guardar'])}}
+
+<hr>
+{{Form::checkbox('checkbox1', 'value', false, ['onClick' => 'saluda()','id' => 'checkbox1'])}}
+{{Form::label('name','Confirmo que los datos ingresados son correctos')}}
+
+<div class="form-group"><a class="btn btn-sm btn-warning" href="{{route('bandeja.index')}}">Cancelar</a></div>
+
+<script>
+function saluda(){
+  var submi = document.getElementById('Guardar');
+  if (document.getElementById('checkbox1').checked)
+  {
+    submi.disabled=false;
+  }else{
+    submi.disabled=true;
+  }
+  
+}
+
+var submi = document.getElementById('Guardar');
+  if (document.getElementById('checkbox1').checked)
+  {
+    submi.disabled=false;
+  }else{
+    submi.disabled=true;
+  }
+
+</script>
+
+<!--<a class="  btn btn-primary" style=" font-size:10px" data-toggle="modal" data-target="#exampleModalCenter" href="" title="Guardar">Guardar</a>
+<!--<a class="  btn btn-dark" style=" font-size:10px" onclick="window.history.back();", href="" title="Actualizar">Cancelar</a>
+<!-- Button trigger modal 
+<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Guardar
+</button>-->
+</div>
+

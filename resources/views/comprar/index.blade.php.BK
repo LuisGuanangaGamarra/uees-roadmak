@@ -1,0 +1,112 @@
+@extends('template.index')
+
+@section('content')
+<div class="row">
+    <div class="col-md-12">
+    {{ Breadcrumbs::render('comprar.index') }}
+    </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    Consultorias Compradas
+    @can('comprar.create')
+    <a href="{{route('cliente.create')}}"
+    class="btn btn-primary pull-right">
+        Crear
+    </a>
+    @endcan
+  </div>
+  <div class="card-body ">
+    <div class="table-responsive">
+    <table class="table table-strip table-hover">
+        <thead>
+            <tr>
+                <th width="10px">ID</th>
+                <th>CLIENTE</th>
+                <th>CONSULTORIA</th>
+                <th>PERIODO</th>
+                <th>CONSULTOR</th>
+                <th>FECHA COMPRADA</th>
+                <th>ARCHIVO</th>
+                <th>ESTADO</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach($consultoria_comprada as $consultoria)
+            <tr>
+                <td>{{$consultoria->id}}</td>
+
+                <!-- DATOS DE CLIENTE-->
+                @foreach($consultoria->usuario_ById($consultoria->cliente) as $result  )
+                    <td style="text-align:center">{{$result->name}}</td>
+                @endforeach
+
+
+
+                <!-- DATOS DE CONSULTORIA-->
+                @foreach($consultoria->consultoriaPlantilla_byId($consultoria->consultorias) as $result  )
+                    @foreach($consultoria->consultoria($result->id_consultoria) as $result2  )
+                        <td style="text-align:center">{{$result2->name}}</td>
+                    @endforeach
+   
+
+                    @foreach($consultoria->plantilla_ById($result->id_plantilla) as $result2  )
+                        <td style="text-align:center">{{$result2->anios}}</td>
+                    @endforeach
+
+
+                @endforeach   
+
+                
+                <!-- DATOS DE CONSULTOR-->
+                @foreach($consultoria->usuario_ById($consultoria->consultor) as $result  )
+                    <td style="text-align:center">{{$result->name}}</td>
+                @endforeach
+
+
+                <td>{{$consultoria->created_at}}</td>
+
+                <td>
+                    @if ($consultoria->archivo)
+                    {{$consultoria->archivo}}
+
+                    @else 
+                    Sin carga
+
+                    @endif
+                
+               </td>
+
+               <td>
+                     @if ($consultoria->estado==NULL)
+                            Sin Activar
+                    @else 
+                            {{$consultoria->estado}}
+                    @endif
+                </td>
+               
+            </tr>
+           @endforeach
+        </tbody>
+
+    </table>
+    </div>
+    {{$consultoria_comprada->links("pagination::bootstrap-4")}}
+  </div>
+</div>
+
+
+@endsection
+
+@section('scripts')
+<script>
+
+var els = document.getElementsByClassName("pull");
+Array.prototype.forEach.call(els, function(el) {
+    setTimeout(function(){el.classList.remove("disabled")},7000);
+
+});
+
+</script>
+
+@endsection

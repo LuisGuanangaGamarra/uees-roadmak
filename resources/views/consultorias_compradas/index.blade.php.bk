@@ -1,0 +1,220 @@
+@extends('template.index')
+
+@section('content')
+<div class="row">
+    <div class="col-md-12">
+        {{ Breadcrumbs::render('consultoria_comprada.index') }}
+    </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    Consultorias Compradas
+  </div>
+  <div class="card-body ">
+    <div class="table-responsive">
+    <table class="table table-strip table-hover">
+        <thead>
+            <tr>
+                <th width="10px">ID</th>
+                <th>CLIENTE</th>
+                <th>CONSULTORÍA</th>
+                <th>PERÍODOS</th>
+                <th>CONSULTOR</th>
+                <th>ARCHIVO</th>
+               
+                <th>LIBRERAR </th>
+                <th>VER/EDIT. ARCHIVO</th>
+                <th>GUARDAR</th>
+
+                <th colspan="5">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach($consultoria_comprada as $consultoria)
+            <tr >
+                <td style="text-align:center">{{$consultoria->id}}</td>
+
+
+                <!-- DATOS DE CLIENTE-->
+                @foreach($consultoria->usuario_ById($consultoria->cliente) as $result  )
+                    <td style="text-align:center">{{$result->name}}</td>
+                @endforeach
+   
+                   
+                <!-- DATOS DE CONSULTORIA-->
+                @foreach($consultoria->consultoriaPlantilla_byId($consultoria->consultorias) as $result  )
+                    @foreach($consultoria->consultoria($result->id_consultoria) as $result2  )
+                        <td style="text-align:center">{{$result2->name}}</td>
+                    @endforeach
+   
+
+                    @foreach($consultoria->plantilla_ById($result->id_plantilla) as $result2  )
+                        <td style="text-align:center">{{$result2->anios}}</td>
+                    @endforeach
+
+
+                @endforeach   
+     
+                
+                <!-- DATOS DE CONSULTOR-->
+                @foreach($consultoria->usuario_ById($consultoria->consultor) as $result  )
+                    <td style="text-align:center">{{$result->name}}</td>
+                @endforeach
+                
+                
+
+               
+              
+                
+                <td style="text-align:center">{{$consultoria->archivo}}</td>
+
+                <!-- LIBERAR: para que el cliente comience a subir los archivos correspondientes-->
+                <td  style="text-align:center"  width="10px">
+                @if ($consultoria->archivo && $consultoria->estado=='pendiente')
+                        <a href="#" 
+                            class="btn btn-sm btn-info disabled" >
+                            Cargado
+                        </a>
+                @elseif ($consultoria->archivo==NULL && $consultoria->estado=='por aceptar')
+                    <a href="{{ route('bandeja.liberar',$consultoria->id)}}" 
+                        class="btn btn-sm btn-success ">
+                        Liberar
+                    </a>
+                    
+                @else
+                    <a href="#" 
+                        class="btn btn-sm btn-secondary disabled">
+                        Liberado
+                    </a>
+                @endif
+                </td >
+                <!-- VER /EDITAR-->
+                <td style="text-align:center" width="10px">
+                @if ($consultoria->archivo)
+                    @can('onlyoffice.view')
+                        <a href="{{ route('bandeja.showonlyoffice',$consultoria->id)}}" 
+                            class="btn btn-sm btn-danger">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{{ route('bandeja.showonlyoffice_procesado',$consultoria->id)}}" 
+                            class="btn btn-sm btn-info">
+                            <i class="fas fa-eye"></i>
+                        </a>
+
+
+                        <a href="{{ "http://localhost:4000/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
+                            class="btn btn-sm btn-info">
+                            <i class="fas fa-download"></i>
+                        </a>
+
+
+                    @endcan
+                @else 
+                    @can('onlyoffice.view')
+                        <a href="{{ route('bandeja.showonlyoffice',$consultoria->id)}}" 
+                            class="btn btn-sm btn-secondary disabled">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        
+                    @endcan
+
+                @endif
+                </td>
+
+                  <!-- GUARDAR CAMBIOS-->
+                  <td style="text-align:center" width="10px">
+                @if ($consultoria->archivo)
+                    @can('onlyoffice.pullfile')
+                        <a  disabled  href="{{ route('bandeja.pullFile', $consultoria->id)}}" class="btn btn-sm btn-primary pull-right pull disabled">PULL</a>
+                    @endcan
+                @else 
+                    @can('onlyoffice.pullfile')
+                        <a  disabled  href="{{ route('bandeja.pullFile', $consultoria->id)}}" class="btn btn-sm btn-secondary pull-right disabled">PULL</a>
+                    @endcan
+
+                @endif
+
+                </td>
+
+                <!--  PROCESAR-->
+                <td  style="text-align:center" width="10px">
+                    @if ($consultoria->archivo)
+                        <a href="{{ route('bandeja.procesar', $consultoria->id)}}" 
+                            class="btn btn-sm btn-info">
+                            Procesar
+                        </a>
+                    @else 
+                        <a href="{{ route('bandeja.procesar', $consultoria->id)}}" 
+                            class="btn btn-sm btn-secondary disabled">
+                            Procesar
+                        </a>
+                    
+                    @endif
+                </td>
+
+                <!--  EDITAR-->
+                <td  style="text-align:center" width="10px">
+                <!-- DATOS DE CONSULTORIA COMPRADA-->
+            
+                    @if ($consultoria->estado=='por aceptar')
+                            <a href="{{ route('comprar.edit',$consultoria->id)}}" 
+                                class="btn btn-sm btn-info">
+                                Editar
+                            </a>
+                        @else 
+                            <a href="{{ route('comprar.edit',$consultoria->id)}}" 
+                                class="btn btn-sm btn-secondary disabled">
+                                Editar
+                            </a>
+                    @endif
+     
+                </td>
+
+
+                <td width="10px">
+                    @if( $consultoria->estado=='procesando')
+                        <a href="{{ route('informe.index', $consultoria->id)}}"
+                            class="btn btn-sm btn-info">
+                            
+                            <i class="fas fa-address-book"></i>
+                             Informe
+                        </a>
+                    @else
+                        <a href="{{ route('informe.index', $consultoria->id)}}" 
+                                class="btn btn-sm btn-secondary disabled">
+                                
+                                <i class="fas fa-address-book"></i>
+                                Informe
+                            </a>
+                    @endif    
+                </td>
+
+
+
+
+              
+            </tr>
+           @endforeach
+        </tbody>
+
+    </table>
+    </div>
+    {{$consultoria_comprada->links("pagination::bootstrap-4")}}
+  </div>
+</div>
+
+
+@endsection
+
+@section('scripts')
+<script>
+
+var els = document.getElementsByClassName("pull");
+Array.prototype.forEach.call(els, function(el) {
+    setTimeout(function(){el.classList.remove("disabled")},7000);
+
+});
+
+</script>
+
+@endsection
