@@ -57,8 +57,8 @@ class CloseInforme extends Mailable
 
 
         return $this->view('emails.close_informe',compact('consultoria'))
-        ->with('name','Joselyne')
-        ->from('jnieves@uees.edu.ec', 'Roadmak')
+        ->with('name','Roadmak')
+        ->from('approadmak@gmail.com', 'Roadmak')
         ->subject('Consultoría comprada');
 
         

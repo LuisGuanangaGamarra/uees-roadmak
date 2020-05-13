@@ -151,7 +151,7 @@ class InformeController extends Controller
 
 
         //ENVIAR EL EMAIL
-        Mail::to('jjfloresr@uees.edu.ec', 'John Flores Roadmak') //DATOS CORREO ROADMAK
+        Mail::to('approadmak@gmail.com', 'Roadmak') //DATOS CORREO ROADMAK
         ->send(new CloseInformeEmail($datos_subconsultoria->name));
 
         return redirect()->route('consultoria_comprada.index');

@@ -57,8 +57,8 @@ class Compra extends Mailable
 
 
         return $this->view('emails.consultoria_comprada',compact('consultoria'))
-        ->with('name','Joselyne')
-        ->from('jnieves@uees.edu.ec', 'Roadmak')
+        ->with('name','Roadmak')
+        ->from('approadmak@gmail.com', 'Roadmak')
         ->subject('Consultoría comprada');
 
         
