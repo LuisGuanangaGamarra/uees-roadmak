@@ -968,17 +968,17 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                 $subcuenta = substr($valor->name, strpos($valor->name,'.')+1);//Ventas Nacionales
                 $cuenta = substr($valor->name, 0, strpos($valor->name,'.')); // Ingresos
                 
-		Log::info('cadeena'.$valor->posicion_cuenta);
+		Log::info($valor->posicion_cuenta);
 		
 
                 if(strpos($subcuenta,'.')){//TIENE MÁS DE DOS CUENTAS
                   //  dd($valor->name, $subcuenta, strpos($subcuenta,'.'),substr($subcuenta, strpos($subcuenta,'.')+1));
                     $sub_subcuenta = substr($subcuenta, strpos($subcuenta,'.')+1);
                     $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $sub_subcuenta);
-		Log::info('cadena'.$sub_subcuenta);
+		Log::info($sub_subcuenta);
 
                 }else{
-		Log::info('cadena'.$subcuenta);
+		Log::info($subcuenta);
                     //CAPTURAR LA CELDA ANTERIOR COMPARADA CON LA SUBCUENTA
                     if( $variable_tmp==$cuenta ){
                         $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $subcuenta);             
@@ -991,8 +991,8 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                
                
             }else{
-		Log::info('cadena1'.$valor->posicion_cuenta);
-                Log::info('cadena1'.$valor->name);
+		Log::info($valor->posicion_cuenta);
+                Log::info($valor->name);
                 //SI NO TIENE SUBCUENTA
                 $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $valor->name);
                 $spreadsheet->getSheetByName($sheet)->getStyle($valor->posicion_cuenta)->applyFromArray($this->stylefont(3));
@@ -1021,14 +1021,7 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
             for ($contador=0; $contador < $periodos+1; $contador++) { //+1 por  el año presente
                
 		Log::info($letra_Inicial.$numero_Inicial);
-		$formulinita=str_replace('%=TUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=UUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=VUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=WUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=XUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=YUM%','SUM',$formulinita);
-		Log::info('ex');Log::info($formulinita);
-		Log::info($letra_Inicial.$numero_Inicial.'-');
+		Log::info($formulinita);
                 $spreadsheet->getSheetByName($sheet)->setCellValue( $letra_Inicial.$numero_Inicial, $formulinita);
                 $var++; $var2++;$var3++;$var4++;$var5++;$var6++;$var7++;$var8++;
                 $letra_Inicial++;
@@ -1042,15 +1035,13 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                 if($contador == $periodos){
                         if(!strpos($valor->name,'.')){//NO TIENE NIVELES Y SU POSICIÓN CUENTA SEA EN LA CELDA B
                         for ($contador_sub=1; $contador_sub < $periodos+1; $contador_sub++) { //+1 por  el año presente
-			Log::info('asd'.$letra_Inicial.$numero_Inicial);
-			
-			$formulinita=str_replace('TUM','SUM',$formulinita);
-			$formulinita=str_replace('UUM','SUM',$formulinita);
-			$formulinita=str_replace('VUM','SUM',$formulinita);
-			$formulinita=str_replace('WUM','SUM',$formulinita);
-			$formulinita=str_replace('XUM','SUM',$formulinita);
-			$formulinita=str_replace('YUM','SUM',$formulinita);
-			Log::info('wse'.$formulinita);
+			Log::info($letra_Inicial.$numero_Inicial);
+			Log::info($formulinita);
+			$formulinita=str_replace('%=TUM%','=SUM',$formulinita);
+			$formulinita=str_replace('%=UUM%','=SUM',$formulinita);
+			$formulinita=str_replace('%=VUM%','=SUM',$formulinita);
+			$formulinita=str_replace('%=WUM%','=SUM',$formulinita);
+			$formulinita=str_replace('%=YUM%','=SUM',$formulinita);
 			$spreadsheet->getSheetByName($sheet)->setCellValue( $letra_Inicial.$numero_Inicial, $formulinita);
                             //$spreadsheet->getSheetByName($sheet)->getStyle( $letra_Inicial.$numero_Inicial)->applyFromArray($styleArrayTotales);
                             $var++; $var2++;$var3++;$var4++;$var5++;$var6++;$var7++;$var8++;

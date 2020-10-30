@@ -8,8 +8,8 @@ use App\formulario;
 use App\SectorEconomico;
 use App\CompraIndice;
 use App\Historico;
-
 use Illuminate\Support\Facades\Log;
+
 use App\Cuentas;
 
 use App\Indice;
@@ -463,27 +463,22 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
         //A 
 	Log::info('Ingreso a procesar_ERI');
         $this->procesar_ERI($consultoria, $sheet,1,'ESTADO DE RESULTADOS INTEGRALES',$arreglo_A);//ESTADO DE RESULTADOS INTEGRALES
-        Log::info('Salio de  procesar_ERI');
+        Log::info('Salio  de procesar_ERI');
 	//B 
 	Log::info('Ingreso a procesarECP');
         $this->procesarECP($consultoria, $sheet,2,'ESTADO DE COSTOS DE PRODUCCION', $formulario,$arreglo_B);//ESTADO DE COSTOS DE PRODUCCION
-        Log::info('Salio de  procesarECP');
-	//C
+	Log::info('Salio de procesarECP');
+        //C
 	Log::info('Ingreso a procesar_ESF');
         $this->procesar_ESF($consultoria, $sheet,3,'ESTADO DE SITUACION FINANCIERA',$formulario,$arreglo_C_1);//ESTADO DE SITUACION FINANCIERA         
-        Log::info('Salio de procesar_ESF');
+        Log::inf procesar_ESF');
 	
-	Log::info('Ingreso a procesar_ESFR');
 	$this->procesar_ESFR($consultoria, $sheet,4,'ESTADO DE SITUACION FINANCIERA RESUMIDOS',$arreglo_C_2);//ESTADO DE SITUACION FINANCIERA RESUMIDOS
-        Log::info('Salio de  procesar_ESFR');
-	//D
-	Log::info('Ingreso a procesar_EFEP');
+        //D
         $this->procesar_EFEP($consultoria, $sheet,5,'ESTADOS DE FLUJOS DE EFECTIVO',$arreglo_D);//ESTADOS DE FLUJOS DE EFECTIVO
-        Log::info('Salio de  procesar_EFEP');
-	//SECTOR ECONOMICO
-	Log::info('Ingreso a procesar_SE');
+        //SECTOR ECONOMICO
         $this->procesar_SE($consultoria, $sheet,6,'SECTOR ECONOMICO',$formulario,2,$arreglo_B);//SECTOR ECONOMICO
-       	Log::info('Salio de  procesar_SE');
+       
 
         $consultoriacomp = ConsultoriasCompradas::find($consultoria->id);
         $consultoriacomp->estado='procesando';
@@ -863,18 +858,14 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
         $inputFileType = 'Xlsx';
         $inputFileName = 'uploads/'.$consultoria->archivo;
 
-	Log::info('iNstancio de php office');
+
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setIncludeCharts(true); 
         $spreadsheet = $reader->load($inputFileName);
         $writer = new Xlsx($spreadsheet);
-	Log::info('fin de php office');
-
-	Log::info('sheet de ESF');
-	Log::info($sheet);
 
         $usuario = Cuentas::where('id_estado_financiero',$id_estado_financiero)->get();
-	
+
         if(empty($usuario)){
             Flash::error('mensaje error');
             return redirect()->back();
@@ -921,38 +912,29 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
             4 RANGO FINAL
         */
         $letra=$this->findletter($id_estado_financiero,1);
-	
         //$letra="E";
         $c=$this->findletter($id_estado_financiero,4)-2;
         $i=$this->findletter($id_estado_financiero,4)-2;
         //$c=144;//$i=144;
-	Log::info($letra);
-	Log::info($c);
-	Log::info($i);
-	Log::info('for 1');
+
         for ($contador=0; $contador < $periodos+1; $contador++) { //+1 por  el año presente
            
-	   Log::info($letra.$c);
-		Log::info($resta+$contador);
             $spreadsheet->getSheetByName($sheet)->setCellValue($letra.$c, $resta+$contador); 
             $spreadsheet->getSheetByName($sheet)->getStyle($letra.$c)->applyFromArray($this->stylefont(4));
             $letra++;
 
             if($contador == $periodos){
-		Log::info('Sub for 1');
+
                 for ($contador_sub=1; $contador_sub < $periodos+1; $contador_sub++) { //+1 por  el año presente
-           	
+           
                     $spreadsheet->getSheetByName($sheet)->setCellValue($letra.$c, $now->format('Y')+$contador_sub); 
                     $spreadsheet->getSheetByName($sheet)->getStyle($letra.$c)->applyFromArray($this->stylefont(5));
                     $letra++;
                 }
-		Log::info('end sub for 1');
 
             }
 
         }
-
-	Log::info('end for 1');
 
 
         //$i=144;
@@ -960,7 +942,7 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
         $inventario_final;
         $variable_tmp="";
 
-	Log::info('foreach usuarios');
+
           foreach($usuario as $valor) {
             if(strpos($valor->name,'.')){
                 //SI TIENE SUBCUENTA                             CUENTAS
@@ -968,17 +950,12 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                 $subcuenta = substr($valor->name, strpos($valor->name,'.')+1);//Ventas Nacionales
                 $cuenta = substr($valor->name, 0, strpos($valor->name,'.')); // Ingresos
                 
-		Log::info('cadeena'.$valor->posicion_cuenta);
-		
-
                 if(strpos($subcuenta,'.')){//TIENE MÁS DE DOS CUENTAS
                   //  dd($valor->name, $subcuenta, strpos($subcuenta,'.'),substr($subcuenta, strpos($subcuenta,'.')+1));
                     $sub_subcuenta = substr($subcuenta, strpos($subcuenta,'.')+1);
-                    $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $sub_subcuenta);
-		Log::info('cadena'.$sub_subcuenta);
+                    $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $sub_subcuenta);    
 
                 }else{
-		Log::info('cadena'.$subcuenta);
                     //CAPTURAR LA CELDA ANTERIOR COMPARADA CON LA SUBCUENTA
                     if( $variable_tmp==$cuenta ){
                         $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $subcuenta);             
@@ -991,8 +968,6 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                
                
             }else{
-		Log::info('cadena1'.$valor->posicion_cuenta);
-                Log::info('cadena1'.$valor->name);
                 //SI NO TIENE SUBCUENTA
                 $spreadsheet->getSheetByName($sheet)->setCellValue($valor->posicion_cuenta, $valor->name);
                 $spreadsheet->getSheetByName($sheet)->getStyle($valor->posicion_cuenta)->applyFromArray($this->stylefont(3));
@@ -1017,18 +992,9 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                 $variable5_anterior="+H"; $var5="+H";$variable6_anterior="-H"; $var6="-H";
                 $variable7_anterior="/H"; $var7="/H";$variable8_anterior="*H"; $var8="*H";
             }
-		Log::info('+1 por  el año presente');
             for ($contador=0; $contador < $periodos+1; $contador++) { //+1 por  el año presente
                
-		Log::info($letra_Inicial.$numero_Inicial);
-		$formulinita=str_replace('%=TUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=UUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=VUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=WUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=XUM%','SUM',$formulinita);
-		$formulinita=str_replace('%=YUM%','SUM',$formulinita);
-		Log::info('ex');Log::info($formulinita);
-		Log::info($letra_Inicial.$numero_Inicial.'-');
+
                 $spreadsheet->getSheetByName($sheet)->setCellValue( $letra_Inicial.$numero_Inicial, $formulinita);
                 $var++; $var2++;$var3++;$var4++;$var5++;$var6++;$var7++;$var8++;
                 $letra_Inicial++;
@@ -1042,16 +1008,7 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                 if($contador == $periodos){
                         if(!strpos($valor->name,'.')){//NO TIENE NIVELES Y SU POSICIÓN CUENTA SEA EN LA CELDA B
                         for ($contador_sub=1; $contador_sub < $periodos+1; $contador_sub++) { //+1 por  el año presente
-			Log::info('asd'.$letra_Inicial.$numero_Inicial);
-			
-			$formulinita=str_replace('TUM','SUM',$formulinita);
-			$formulinita=str_replace('UUM','SUM',$formulinita);
-			$formulinita=str_replace('VUM','SUM',$formulinita);
-			$formulinita=str_replace('WUM','SUM',$formulinita);
-			$formulinita=str_replace('XUM','SUM',$formulinita);
-			$formulinita=str_replace('YUM','SUM',$formulinita);
-			Log::info('wse'.$formulinita);
-			$spreadsheet->getSheetByName($sheet)->setCellValue( $letra_Inicial.$numero_Inicial, $formulinita);
+                            $spreadsheet->getSheetByName($sheet)->setCellValue( $letra_Inicial.$numero_Inicial, $formulinita);
                             //$spreadsheet->getSheetByName($sheet)->getStyle( $letra_Inicial.$numero_Inicial)->applyFromArray($styleArrayTotales);
                             $var++; $var2++;$var3++;$var4++;$var5++;$var6++;$var7++;$var8++;
                             $letra_Inicial++;
@@ -1071,8 +1028,6 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
 
           
         }  
-
-	Log::info('end foreach usuarios');
         $spreadsheet->getSheetByName($sheet)->getColumnDimension('A')->setWidth(1);
         $spreadsheet->getSheetByName($sheet)->getColumnDimension('B')->setWidth(1);
         $spreadsheet->getSheetByName($sheet)->getColumnDimension('C')->setWidth(55);
@@ -1097,15 +1052,13 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
         $Indices = Indice::where('estadosfinancieros_id',$id_estado_financiero)
         ->whereIn('id', $compra_indice)->get();
 
-	Log::info('foreach indices');
+
         foreach($Indices as $indice){
 
         //dd(strtoupper($formulario->respuesta2));    
                 /* if( (strtoupper($formulario->respuesta2) == 'SI') || ( strtoupper($formulario->respuesta2) == 'NO' &&  ($indice->name != 'Días de Cobro Exportación' ) ) || (strtoupper($formulario->respuesta2) == 'NO' &&  ($indice->name != 'Días de Cobro Exportación' && $indice->name != 'Días de Cobro Relacionados') ))
                 { */
-		Log::info($sheet);
-		Log::info($indice->posicion_cuenta);
-		Log::info($indice->name);
+                    
                     $spreadsheet->getSheetByName($sheet)->setCellValue($indice->posicion_cuenta, $indice->name);
                     $letra_Inicial=  substr($indice->posicion_formula, 0, 1);
                     $numero_Inicial=  substr($indice->posicion_formula, 1, strlen($valor->posicion_formula));
@@ -1125,10 +1078,8 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
                         $variable7_anterior="/H"; $var7="/H";$variable8_anterior="*H"; $var8="*H";
                     }
     
-			Log::info('sub for indices');
                     for ($contador=0; $contador < $periodos+1; $contador++) {
-                    	Log::info($letra_Inicial.$numero_Inicial);
-			Log::info($formulinita);
+                    
                         $spreadsheet->getSheetByName($sheet)->setCellValue( $letra_Inicial.$numero_Inicial, $formulinita);
                         //$spreadsheet->getSheetByName($sheet)->getStyle( $letra_Inicial.$numero_Inicial)->applyFromArray($styleArrayTotales);
     
@@ -1150,15 +1101,11 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
            
 
         }
-	Log::info('end foreach indices');
         //INDICES////////////////////////////////////////////////////////
 
-	try{
-        	$writer->setPreCalculateFormulas(true);
-        	$writer->save($inputFileName);
-	}catch(\Exception $e){
-		Log::info($e->getMessage());
-	}
+
+        $writer->setPreCalculateFormulas(true);
+        $writer->save($inputFileName);
 
       
     }
@@ -1391,14 +1338,9 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
         //INDICES////////////////////////////////////////////////////////
 
 
-	try{
+
             $writer->setPreCalculateFormulas(true);
-		$writer->save($inputFileName);
-	} catch(\Exception $e){
-	Log::info('esfr');
-	Log::info($e->getMessage());
-	}
-            
+            $writer->save($inputFileName);
 
       
     }
@@ -1629,17 +1571,9 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
         }
         //INDICES////////////////////////////////////////////////////////
 
-	try{
-	
-	
+
         $writer->setPreCalculateFormulas(true);
         $writer->save($inputFileName);
-
-	}catch(\Exception $e){
-		Log::info('Efep');
-		Log::info($e->getMessage());
-	}
-	
 
       
     }
@@ -1819,14 +1753,10 @@ public function sendArchivoOnlyOffice(ConsultoriasCompradas $consultoria){
             
         } 
         
-	
-	try{
+
+
         $writer->setPreCalculateFormulas(true);
         $writer->save($inputFileName);
-	}catch(\Exception $e){
-		Log::info('procesar se');
-		Log::info($e->getMessage());
-	}
 
 
 

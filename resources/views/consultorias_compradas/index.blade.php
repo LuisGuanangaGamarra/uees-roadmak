@@ -156,7 +156,7 @@
                                         class="btn btn-sm btn-info ">
                                         <i class="fas fa-eye "></i>
                                     </a>
-                                    <a href="{{ "http://159.89.183.216:82/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
+                                    <a href="{{ "http://159.89.183.216:4000/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
                                         class="btn btn-sm btn-info">
                                         <i class="fas fa-download"></i>
                                     </a>
@@ -165,7 +165,7 @@
                                         class="btn btn-sm btn-info disabled">
                                         <i class="fas fa-eye "></i>
                                     </a>
-                                    <a href="{{ "http://159.89.183.216:82/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
+                                    <a href="{{ "http://159.89.183.216:4000/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
                                         class="btn btn-sm btn-info disabled">
                                         <i class="fas fa-download"></i>
                                     </a>
@@ -183,7 +183,7 @@
                                         class="btn btn-sm btn-secondary disabled">
                                         <i class="fas fa-eye "></i>
                                 </a>
-                                <a href="{{ "http://159.89.183.216:82/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
+                                <a href="{{ "http://159.89.183.216:4000/download/?ip=$ip&fileName=procesado_". $consultoria->archivo}}" 
                                     class="btn btn-sm btn-secondary disabled">
                                     <i class="fas fa-download"></i>
                                 </a>

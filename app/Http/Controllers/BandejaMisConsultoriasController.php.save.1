@@ -1,0 +1,249 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\ConsultoriasCompradas;
+use App\EstadosResultadosIntegrales;
+use App\EstadosSituacionFinanciera;
+use App\formulario;
+use App\SectorEconomico;
+use App\CompraIndice;
+use App\Historico;
+
+use Illuminate\Support\Facades\Log;
+use App\Cuentas;
+
+use App\Indice;
+
+use GuzzleHttp\Client;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Chart\Title;
+use PhpOffice\PhpSpreadsheet\Chart\Chart;
+use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
+use PhpOffice\PhpSpreadsheet\Chart\Layout;
+use PhpOffice\PhpSpreadsheet\Chart\Legend;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
+use Illuminate\Support\Facades\DB;
+set_time_limit(900);
+
+class BandejaMisConsultoriasController extends Controller
+
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
+    public function index(){
+
+        if(Auth::user()->isRole('cliente') ){//SI ES cliente
+            $consultoria_comprada = ConsultoriasCompradas::where('cliente',Auth::user()->id)->get()/* ->paginate(5) */;
+            return view('bandeja.index',compact('consultoria_comprada'));
+            
+            }else if(Auth::user()->isRole('superadmin') || Auth::user()->isRole('operador') || Auth::user()->isRole('admin') ){//SI ES SUPERADMINISTRADOR
+            $consultoria_comprada = ConsultoriasCompradas::get()/* paginate(5) */;
+            return view('bandeja.index',compact('consultoria_comprada'));
+            
+
+        }else{//SI ES OTRO ROL
+            return redirect()->route('/');
+        }
+
+
+    }
+
+ 
+
+
+    public function obtenerListadoDeArchivos(ConsultoriasCompradas $consultoria){
+        $res = array();
+        $data2 = [];
+        if($consultoria->archivo){
+            $destinationPath = 'uploads';
+            //$directorio = $destinationPath .'/'.$consultoria->archivo;
+            $directorio='/var/www/html/uees-roadmak/public/'.$destinationPath.'/'.$consultoria->archivo;
+            if(file_exists ($directorio )){
+
+                // a partir de PHP 5.4
+            /*$res = [
+                    "name" => $consultoria->archivo,
+                    "size" => filesize($directorio),
+                    "date" => fileatime($directorio)
+                ]; */
+
+                /*                 $res=array_add($res, 'name', $consultoria->archivo);
+                $res=array_add($res, 'size', filesize($directorio));
+                $res=array_add($res, 'date',fileatime($directorio)); */
+
+
+                
+             
+                    $data2= [
+                        "name" => $consultoria->archivo,
+                        "size" => filesize($directorio),
+                        "date" => fileatime($directorio)
+                    ];
+              
+
+                
+                //array_push($res,$consultoria->archivo);//NOMBRE ARCHIVO
+                //array_push($res,filesize($directorio));//TAMAÑO
+                //array_push($res,fileatime($directorio));//FECHA ULTIMA MODIFICACION
+            }else{ 
+                
+                //array_push($res,"Sin Archivo");//NOMBRE ARCHIVO
+                //array_push($res,"");//TAMAÑO
+                //array_push($res,"");//FECHA ULTIMA MODIFICACION
+                /*$res = [
+                    "name" =>"Sin Archivo",
+                    "size" => "",
+                    "date" => ""
+                ]; */
+
+                /*$res=array_add($res, 'name',"Sin Archivo");
+                $res=array_add($res, 'size', "");
+                $res=array_add($res, 'date',""); */
+
+                $data2[]= [  
+                "name" =>"Sin Archivo",
+                "size" => "",
+                "date" => ""
+                ];
+            }
+        }return  $data2;
+    }
+
+
+    public function index_file(ConsultoriasCompradas $consultoria) {
+       // $datos<?php
+
+namespace App\Http\Controllers;
+use App\ConsultoriasCompradas;
+use App\EstadosResultadosIntegrales;
+use App\EstadosSituacionFinanciera;
+use App\formulario;
+use App\SectorEconomico;
+use App\CompraIndice;
+use App\Historico;
+
+use Illuminate\Support\Facades\Log;
+use App\Cuentas;
+
+use App\Indice;
+
+use GuzzleHttp\Client;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Chart\Title;
+use PhpOffice\PhpSpreadsheet\Chart\Chart;
+use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
+use PhpOffice\PhpSpreadsheet\Chart\Layout;
+use PhpOffice\PhpSpreadsheet\Chart\Legend;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
+use Illuminate\Support\Facades\DB;
+set_time_limit(900);
+
+class BandejaMisConsultoriasController extends Controller
+
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
+    public function index(){
+
+        if(Auth::user()->isRole('cliente') ){//SI ES cliente
+            $consultoria_comprada = ConsultoriasCompradas::where('cliente',Auth::user()->id)->get()/* ->paginate(5) */;
+            return view('bandeja.index',compact('consultoria_comprada'));
+            
+            }else if(Auth::user()->isRole('superadmin') || Auth::user()->isRole('operador') || Auth::user()->isRole('admin') ){//SI ES SUPERADMINISTRADOR
+            $consultoria_comprada = ConsultoriasCompradas::get()/* paginate(5) */;
+            return view('bandeja.index',compact('consultoria_comprada'));
+            
+
+        }else{//SI ES OTRO ROL
+            return redirect()->route('/');
+        }
+
+
+    }
+
+ 
+
+
+    public function obtenerListadoDeArchivos(ConsultoriasCompradas $consultoria){
+        $res = array();
+        $data2 = [];
+        if($consultoria->archivo){
+            $destinationPath = 'uploads';
+            //$directorio = $destinationPath .'/'.$consultoria->archivo;
+            $directorio='/var/www/html/uees-roadmak/public/'.$destinationPath.'/'.$consultoria->archivo;
+            if(file_exists ($directorio )){
+
+                // a partir de PHP 5.4
+            /*$res = [
+                    "name" => $consultoria->archivo,
+                    "size" => filesize($directorio),
+                    "date" => fileatime($directorio)
+                ]; */
+
+                /*                 $res=array_add($res, 'name', $consultoria->archivo);
+                $res=array_add($res, 'size', filesize($directorio));
+                $res=array_add($res, 'date',fileatime($directorio)); */
+
+
+                
+             
+                    $data2= [
+                        "name" => $consultoria->archivo,
+                        "size" => filesize($directorio),
+                        "date" => fileatime($directorio)
+                    ];
+              
+
+                
+                //array_push($res,$consultoria->archivo);//NOMBRE ARCHIVO
+                //array_push($res,filesize($directorio));//TAMAÑO
+                //array_push($res,fileatime($directorio));//FECHA ULTIMA MODIFICACION
+            }else{ 
+                
+                //array_push($res,"Sin Archivo");//NOMBRE ARCHIVO
+                //array_push($res,"");//TAMAÑO
+                //array_push($res,"");//FECHA ULTIMA MODIFICACION
+                /*$res = [
+                    "name" =>"Sin Archivo",
+                    "size" => "",
+                    "date" => ""
+                ]; */
+
+                /*$res=array_add($res, 'name',"Sin Archivo");
+                $res=array_add($res, 'size', "");
+                $res=array_add($res, 'date',""); */
+
+                $data2[]= [  
+                "name" =>"Sin Archivo",
+                "size" => "",
+                "date" => ""
+                ];
+            }
+        }return  $data2;
+    }
+
+
+    public function index_file(ConsultoriasCompradas $consultoria) {
+       // $datos
