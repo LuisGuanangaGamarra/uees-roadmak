@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+</head>
+<body>
+    <hgroup>
+        <h1>Error.</h1>
+        <h2>An error occurred while processing your request.</h2>
+    </hgroup>
+    <div>ENOENT: no such file or directory, stat &#39;/var/www/api-onlyoffice/public/files/__ffff_127.0.0.1/consult2_procesado_consult7_plantilla de ingreso_con valores.xlsx&#39;</div>
+</body>
+</html>
