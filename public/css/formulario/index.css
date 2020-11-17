@@ -1,0 +1,19 @@
+.label-principal {
+    font-size: 1.5rem;
+}
+
+.label-secciones-formulario {
+    font-size: 1rem;
+}
+
+.divider {
+    border-top: 3px solid #bbb;
+}
+
+.bolder {
+    font-weight: bold;
+}
+
+.label-confirmacion {
+    font-size: 0.8rem;
+}

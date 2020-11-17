@@ -1,68 +1,85 @@
-<div class="form-group" style="text-align:center">
-<h1>FORMULARIO</h1>
+<div class="row no-gutters">
+    <div class="col-6 col-lg-5 offset-3 text-center ">
+      <h1 class="label-principal">FORMULARIO</h1>
+    </div>
 </div>
 <hr>
-<div class="form-group">
-<h3>¿A qué sector pertenece su empresa?</h3>
+
+<div class="row no-gutters">
+  <div class="col-12 col-sm-5 offset-sm-1">
+      <div class="row no-gutters">
+        <h3 class="label-secciones-formulario">¿A qué sector pertenece su empresa?</h3>
+      </div>
+      
+      <div class="row pl-3 flex-column">
+          {!! Form::hidden('idconsultoria', $consultoria) !!}
+          <div class="custom-control custom-radio">
+            {{ Form::radio('respuesta1', 'Servicios' , false,['class'=>"custom-control-input",'id'=>'respuestaServicios']) }}
+            {!! Form::label('respuestaServicios', 'Servicios',['class'=>"custom-control-label"]) !!}
+          </div>
+          
+          <div class="custom-control custom-radio">
+            {{ Form::radio('respuesta1', 'Comercial' , false,['class'=>"custom-control-input",'id'=>'respuestaComercial']) }}
+            {!! Form::label('respuestaComercial', 'Comercial',['class'=>"custom-control-label"]) !!}
+
+          </div>
+          <div class="custom-control custom-radio">
+            {{ Form::radio('respuesta1', 'Industrial' , false,['class'=>"custom-control-input",'id'=>'respuestaIndustrial']) }}
+            {!! Form::label('respuestaIndustrial', 'Industrial',['class'=>"custom-control-label"]) !!}
+          </div>
+
+      </div>
+  </div>
+  <div class="col-12 col-sm-5">
+    <div class="row no-gutters">
+      <h3 class="label-secciones-formulario">¿La empresa realiza operaciones de Comercio exterior?</h3>
+    </div>
+    <div class="row pl-3 flex-column">
+      <div class="custom-control custom-radio">
+        {{ Form::radio('respuesta2', 'si' , false,['class'=>"custom-control-input",'id'=>'respuesta2SiComercio']) }}
+        {!! Form::label('respuesta2SiComercio', 'si',['class'=>"custom-control-label"]) !!}
+      </div>
+      <div class="custom-control custom-radio">
+        {{ Form::radio('respuesta2', 'no' , false,['class'=>"custom-control-input",'id'=>'respuesta2NOComercio']) }}
+        {!! Form::label('respuesta2NOComercio', 'no' ,['class'=>"custom-control-label"]) !!}
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="form-group">
 
 
-
-  <div class="radio">
-
-  {!! Form::hidden('idconsultoria', $consultoria) !!}
-  
-  {{ Form::radio('respuesta1', 'Servicios' , false) }}
-  {!! Form::label('label', 'Servicios') !!}
-  <br/>
-  {{ Form::radio('respuesta1', 'Comercial' , false) }}
-  {!! Form::label('label', 'Comercial') !!}
-  <br/>
-  {{ Form::radio('respuesta1', 'Industrial' , false) }}
-  {!! Form::label('label', 'Industrial') !!}
-  <br/>
-<!--  {{ Form::radio('respuesta1', 'No estoy seguro => nola' , false) }}
-  {!! Form::label('label', 'No estoy seguro') !!}-->
- </div>
-</div>
-<hr>
-<div class="form-group">
-<h3>¿La empresa realiza operaciones de Comercio exterior?</h3>
-</div>
-<div class="form-group">
-
-{{ Form::radio('respuesta2', 'si' , false) }}
-{!! Form::label('label', 'si') !!} <br/>
-{{ Form::radio('respuesta2', 'no' , false) }}
-{!! Form::label('label', 'no') !!}<br/>
-<!--{{ Form::radio('respuesta2', 'No estoy seguro' , false) }}
-{!! Form::label('label', 'No estoy seguro') !!} -->
+<div class="row no-gutters mt-2">
+  <div class="col-12 col-sm-5 offset-sm-1">
+      <div class="row no-gutters">
+        <h3 class="label-secciones-formulario">¿La empresa mantiene operaciones con partes relacionadas?</h3>
+      </div>
+      
+      <div class="row pl-3 flex-column">
+        <div class="custom-control custom-radio">
+          {{ Form::radio('respuesta3', 'si' , false,['class'=>"custom-control-input",'id'=>'respuesta3SiOperaciones']) }}
+          {!! Form::label('respuesta3SiOperaciones', 'si',['class'=>"custom-control-label"]) !!}
+        </div>
+        <div class="custom-control custom-radio">
+          {{ Form::radio('respuesta3', 'no' , false,['class'=>"custom-control-input",'id'=>'respuesta3NoOperaciones']) }}
+          {!! Form::label('respuesta3NoOperaciones', 'no',['class'=>"custom-control-label"]) !!}
+        </div>
+        
+      </div>
+  </div>
+  <div class="col-12 col-sm-5">
+    <div class="row no-gutters">
+      <h3 class="label-secciones-formulario">Indique la actividad económica de su empresa</h3>
+    </div>
+    <div class="row pl-3 flex-column">
+      {{Form::select('respuesta4',array('' => 'Elegir una actividad') + $actividad_economica , null, array('required'=>'required','class' => 'foo custom-select custom-select-sm',"data-size"=>"10"))}}
+    </div>
+  </div>
 </div>
 
-<hr>
-<div class="form-group">
-<h3>¿La empresa mantiene operaciones con partes relacionadas?</h3>
-</div>
-<div class="form-group">
 
-{{ Form::radio('respuesta3', 'si' , false) }}
-{!! Form::label('label', 'si') !!} <br/>
-{{ Form::radio('respuesta3', 'no' , false) }}
-{!! Form::label('label', 'no') !!}<br/>
-<!--{{ Form::radio('respuesta3', 'No estoy seguro' , false) }}
-{!! Form::label('label', 'No estoy seguro') !!} -->
-</div>
 
-<hr>
-<div class="form-group">
-<h3>Indique la actividad económica de su empresa</h3>
-</div>
 
-<div class="form-group" >
-{{Form::select('respuesta4',array('' => 'Elegir una actividad') + $actividad_economica , null, array('required'=>'required','class' => 'foo'))}}
-</div>
 
 
 <div class="form-group">
@@ -90,20 +107,30 @@
 
 
 
+<div class="row no-gutters">
+  <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+    {{Form::checkbox('checkbox1', 'value', false, ['onClick' => 'saluda()','id' => 'checkbox1'])}}
+    {{Form::label('name','Confirmó que los datos ingresados son correctos',array('class'=>'bolder label-confirmacion'))}}
+  </div>
+   
+</div>
+
+
+<div class="row no-gutters">
+
+<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 offset-md-1">
+  {{Form::submit('Guardar', ['class'=>'btn btn-block btn-primary ','disabled' => 'disabled','id'=>'Guardar'])}}
+</div>
+<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 offset-md-1">
+  <a class="btn btn-block btn-warning" href="{{route('bandeja.index')}}">Cancelar</a>
+</div>
+
+
+</div>
 
 
 
-<div class="form-group">
-<!--<input type=button onclick="pregunta()" value="Enviar">  -->
 
-
-{{Form::submit('Guardar', ['class'=>'btn btn-sm btn-primary','disabled' => 'disabled','id'=>'Guardar'])}}
-
-<hr>
-{{Form::checkbox('checkbox1', 'value', false, ['onClick' => 'saluda()','id' => 'checkbox1'])}}
-{{Form::label('name','Confirmó que los datos ingresados son correctos')}}
-
-<div class="form-group"><a class="btn btn-sm btn-warning" href="{{route('bandeja.index')}}">Cancelar</a></div>
 
 <script>
 function saluda(){
@@ -127,5 +154,5 @@ var submi = document.getElementById('Guardar');
 
 </script>
 
-</div>
+
 

@@ -1,5 +1,13 @@
 @extends('template.index')
 
+@section('cssSectionPropio')
+<link rel="stylesheet" href="{{asset('css/formulario/index.css')}}">
+@endsection
+
+@section('scriptsPropios')
+    
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-md-12">
@@ -8,7 +16,7 @@
 </div>
 <div class="card">
   <div class="card-header">
-    Formulario
+    &nbsp
   </div>
   <div class="card-body">
 
