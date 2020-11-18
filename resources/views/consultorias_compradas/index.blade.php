@@ -52,8 +52,8 @@
                         <th>ESTADO </th>
                         <th>VER/EDIT. ARCHIVO</th>
                         <th>PROCESAR</th>
-                        <th>EDITAR;</th>
-                        <th>&nbsp;</th>
+                        <th>EDITAR</th>
+                        <th>INFORME</th>
                         
                     </tr>
             </thead>
@@ -96,6 +96,10 @@
                                     </center>{{$consultoria->archivo}}
                                 <a>
                             </td>
+                            @else
+                                <td width="10px" style="">
+                            
+                                </td>
                             @endif
                         @else 
                             <td width="10px" style="">
