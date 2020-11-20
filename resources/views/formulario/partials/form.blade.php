@@ -106,7 +106,7 @@
 
 
 
-
+<hr>
 <div class="row no-gutters mt-4">
   <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 text-center">
     {{Form::checkbox('checkbox1', 'value', false, ['onClick' => 'saluda()','id' => 'checkbox1'])}}
