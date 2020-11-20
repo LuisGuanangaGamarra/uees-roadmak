@@ -1,5 +1,5 @@
 <div class="row no-gutters">
-    <div class="col-6 col-lg-5 offset-3 text-center ">
+    <div class="col-6 col-lg-6 offset-3 text-center ">
       <h1 class="label-principal">FORMULARIO</h1>
     </div>
 </div>
@@ -107,8 +107,8 @@
 
 
 
-<div class="row no-gutters">
-  <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+<div class="row no-gutters mt-4">
+  <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 text-center">
     {{Form::checkbox('checkbox1', 'value', false, ['onClick' => 'saluda()','id' => 'checkbox1'])}}
     {{Form::label('name','Confirmó que los datos ingresados son correctos',array('class'=>'bolder label-confirmacion'))}}
   </div>
@@ -116,12 +116,12 @@
 </div>
 
 
-<div class="row no-gutters">
+<div class="row no-gutters mt-4">
 
-<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 offset-md-1">
+<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 px-3 offset-md-2">
   {{Form::submit('Guardar', ['class'=>'btn btn-block btn-primary ','disabled' => 'disabled','id'=>'Guardar'])}}
 </div>
-<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 offset-md-1">
+<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 px-3 offset-md-0">
   <a class="btn btn-block btn-warning" href="{{route('bandeja.index')}}">Cancelar</a>
 </div>
 
