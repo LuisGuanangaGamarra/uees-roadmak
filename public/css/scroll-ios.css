@@ -1,10 +1,22 @@
+.table-responsive::-webkit-scrollbar{
+width:3px !important;
+}
+/* width */
 ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 7px;
+  width: 5px;
 }
 
- ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, .5);
-    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
