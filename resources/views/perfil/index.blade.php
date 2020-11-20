@@ -12,7 +12,12 @@
   <div class="card-body">  
     <div class="row">
         <div class="col-md-12 text-center">
-            <img src="{{ asset($usuario->file)}}" class="mx-auto rounded-circle" alt="{{ 'Avatar '.$usuario->name}}" width="256" height="256"> 
+          @if(Auth::user()->file)
+          <img src="{{ asset($usuario->file)}}" class="mx-auto rounded-circle" alt="{{ 'Avatar '.$usuario->name}}" width="256" height="256"> 
+          @else
+          <img src="{{ asset('/images/users/avatar.png') }}" class="mx-auto rounded-circle" alt="{{ 'Avatar '.$usuario->name}}" width="256" height="256"> 
+          @endif
+            
             <h3 class="card-title">{{ $usuario->name .' '.$usuario->lastname }}</h3>
             <span class="email">{{ $usuario->email }}</span>
         </div>
