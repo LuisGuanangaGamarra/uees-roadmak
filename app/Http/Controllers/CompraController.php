@@ -76,7 +76,7 @@ class CompraController extends Controller
 
             $response = $client->request('GET', 'Consultorias_status_id/'.$selectConsultorias->grupo);
             $datos=json_decode($response->getBody()->getContents());
-            Log::info('Consultorias_status_id', ['datos' => $datos]);
+            Log::info('Consultorias_status_id', ['datos' => $datos,'id'=>$selectConsultorias->grupo]);
             if($datos->consultorias){
                 if($datos->consultorias[0]->active && $datos->consultorias[0]->TOTAL>0){//1->activo
                     $consultoria =SubConsultorias::find($selectConsultorias->id);
