@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\Compra as CompraEmail;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class CompraController extends Controller
 {
     /**
@@ -76,6 +76,7 @@ class CompraController extends Controller
 
             $response = $client->request('GET', 'Consultorias_status_id/'.$selectConsultorias->grupo);
             $datos=json_decode($response->getBody()->getContents());
+            Log::info('Consultorias_status_id', ['datos' => $datos]);
             if($datos->consultorias){
                 if($datos->consultorias[0]->active && $datos->consultorias[0]->TOTAL>0){//1->activo
                     $consultoria =SubConsultorias::find($selectConsultorias->id);
