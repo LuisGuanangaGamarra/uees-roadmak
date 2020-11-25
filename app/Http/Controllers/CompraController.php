@@ -77,7 +77,7 @@ class CompraController extends Controller
             $response = $client->request('GET', 'Consultorias_status_id/'.$selectConsultorias->grupo);
             $datos=json_decode($response->getBody()->getContents());
             if($datos->consultorias){
-                if($datos->consultorias[0]->active){//1->activo
+                if($datos->consultorias[0]->active && $datos->consultorias[0]->TOTAL>0){//1->activo
                     $consultoria =SubConsultorias::find($selectConsultorias->id);
                     $nombre = $consultoria->name;//OBTENER EL NOMBRE DEL SUBPRODUCTO
                     $consultoriasArray[$selectConsultorias->id] = $selectConsultorias->id." - ". $nombre;
