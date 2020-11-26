@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CloseInforme as CloseInformeEmail;
 use File;
+use Illuminate\Support\Facades\Log;
 class InformeController extends Controller
 {
     /**
@@ -64,11 +65,13 @@ class InformeController extends Controller
         $fechaactual = getdate();
         $fechaactual=$fechaactual['year'].'_'.$fechaactual['mon'].'_'.$fechaactual['mday'];
 
+        $htm= view('informe.pdf-informe', compact('Informe',"consultoria","validaconsultoria"));
+        Log::info('informe.pdf-informe',['html'=>$htm]);
         $pdf =  PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('informe.pdf-informe', compact('Informe',"consultoria","validaconsultoria"));
         $pdf->setPaper('A4');
         //$pdf->save("informes/".'Informe_'.$consultoria.'_'.$fechaactual.'.pdf');
         return $pdf->download('Informe_'.$consultoria.'_'.$fechaactual.'.pdf');
-        return view('informe.pdf-informe', compact('Informe',"consultoria","validaconsultoria"));
+       
         //return redirect('informe.index');
     }
 
