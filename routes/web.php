@@ -1125,7 +1125,7 @@ Route::middleware(['auth'])->group(function(){
          * 
          */
 
-        Route::get('/images/{idempresa}/{file}','ImageController@getImage');//->middleware('permission:consultorias.index');;
+        //->middleware('permission:consultorias.index');;
         Route::get('/PDF/{carpeta}/{file}','PDFController@getpdf');//->middleware('permission:consultorias.index');;
 
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -1140,3 +1140,4 @@ Route::middleware(['auth'])->group(function(){
     
   //  Route::get('doceditor')->name('onlyoffice.doceditor');
     
+  Route::get('/images/{idempresa}/{file}','ImageController@getImage');
