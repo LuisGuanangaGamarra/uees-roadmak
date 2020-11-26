@@ -44,7 +44,7 @@ class ImageController extends Controller {
             case 2:
             case 1:
             case 3:
-                $path = '/var/www/html/uees-roadmak/storage/images/'.$idempresa.'/'.$filename; 
+                $path = storage_path('images/'.$idempresa.'/'.$filename);
                 if(file_exists ($path )){
                     $type = "image/jpeg"; 
                     header('Content-Type:'.$type); 
@@ -55,7 +55,7 @@ class ImageController extends Controller {
                         }
             case 4 :
                 if ($idlog == $idempresa){
-                    $path = '/var/www/html/uees-roadmak/storage/images/'.$idempresa.'/'.$filename; 
+                    $path = storage_path('images/'.$idempresa.'/'.$filename);
                     if(file_exists ($path )){
                         $type = "image/jpeg"; 
                         header('Content-Type:'.$type); 
