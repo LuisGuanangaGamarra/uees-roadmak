@@ -25,7 +25,7 @@ class ImageController extends Controller {
         }
         catch(\Exception $e)
         {
-            $path = '/var/www/html/uees-roadmak/storage/images/'.$idempresa.'/'.$filename; 
+            $path = storage_path('images/'.$idempresa.'/'.$filename); 
             if(file_exists ($path )){
                 $type = "image/jpeg"; 
                 header('Content-Type:'.$type); 
