@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\GaleriaStoreRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 class GaleriaController extends Controller
 {
     /**
@@ -18,8 +19,10 @@ class GaleriaController extends Controller
     public function index(Request $request,$consultoria)
     {
         //$subruta= $_SERVER["REMOTE_ADDR"];
-        $subruta="localhost";
-        $subruta= "http://".$subruta.":".$_SERVER["SERVER_PORT"];
+       // $subruta="localhost";
+       // $subruta= "http://".$subruta.":".$_SERVER["SERVER_PORT"];
+        $subruta = env("urlsistema"); 
+        Log::info("GaleriaController index",['subruta'=>$subruta] );   
         $Galeria = Galeria::where('idinforme',$consultoria)-> paginate(5)/* get()*/;
         return view('informe.galeria.index',compact('Galeria', 'consultoria','subruta'));
     }
@@ -49,6 +52,7 @@ class GaleriaController extends Controller
         if($request->file('file')){
             $path = Storage::disk('local')->put($ruta, $request->file('file'));
         }
+        Log::info("GaleriaController store",['path'=>$path] );   
         $Galeria = Galeria::create($request->all());
         $Galeria->fill(['file' => $path])->save();
         return redirect()->route('galeria.index',$consultoria);
