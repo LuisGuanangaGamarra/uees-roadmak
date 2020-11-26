@@ -20,7 +20,23 @@ class ImageController extends Controller {
 
     public function getImage($idempresa, $filename) { 
         //1. VER QUIEN ESTÁ LOGEADO
-        $idlog = Auth::user()->id;
+        try{
+            $idlog = Auth::user()->id;
+        }
+        catch(\Exception $e)
+        {
+            $path = '/var/www/html/uees-roadmak/storage/images/'.$idempresa.'/'.$filename; 
+            if(file_exists ($path )){
+                $type = "image/jpeg"; 
+                header('Content-Type:'.$type); 
+                header('Content-Length: ' . filesize($path)); 
+                readfile($path); 
+                exit();
+            }else{ 
+                return "La ruta no existe..";
+            }
+        }
+       
         // dd("$idlog");
         $role_tipo = role_user::where('user_id',$idlog)->get();
         //dd($role_tipo[0]->role_id);
