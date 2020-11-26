@@ -64,7 +64,7 @@ class InformeController extends Controller
         $fechaactual = getdate();
         $fechaactual=$fechaactual['year'].'_'.$fechaactual['mon'].'_'.$fechaactual['mday'];
 
-        $pdf =  PDF::loadView('informe.pdf-informe', compact('Informe',"consultoria","validaconsultoria"));
+        $pdf =  PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])::loadView('informe.pdf-informe', compact('Informe',"consultoria","validaconsultoria"));
         $pdf->setPaper('A4');
         //$pdf->save("informes/".'Informe_'.$consultoria.'_'.$fechaactual.'.pdf');
         return $pdf->download('Informe_'.$consultoria.'_'.$fechaactual.'.pdf');
